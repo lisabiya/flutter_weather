@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_debby/Bean/Weather.dart';
+import 'package:flutter_debby/Bean/GanHo.dart';
 
 BaseOptions options = BaseOptions(
   baseUrl: "https://www.sojson.com/open/api/",
@@ -10,6 +11,8 @@ BaseOptions options = BaseOptions(
 final String path = 'weather/json.shtml';
 
 typedef WeatherData(Weather data);
+
+typedef OnGetMessage(Fuli message);
 
 getWeather(WeatherData data, {String city}) async {
   var dio = Dio(options);
@@ -23,9 +26,17 @@ getWeather(WeatherData data, {String city}) async {
   data(weather);
 }
 
-getTest() async {
+getTest(OnGetMessage onMessage) async {
   var dio = Dio();
-  Response response =
-      await dio.get('https://debby.oss-cn-beijing.aliyuncs.com/test.json');
-  print(response.data);
+  try {
+    Response response = await dio.get("http://gank.io/api/today");
+    bool state = response.data['error'];
+    if (!state) {
+      GanHo ganHo = GanHo.fromJson(response.data);
+      print(ganHo.results.fuli[2].toString());
+      onMessage(ganHo.results.fuli[2]);
+    }
+  } catch (e) {
+    print("response" + e);
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_debby/Bean/Weather.dart';
 import 'package:flutter_debby/Net/HttpRequest.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_debby/Bean/GanHo.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
-  Weather weather;
+  Fuli message;
 
   TextField field = TextField(
     controller: TextEditingController(),
@@ -23,13 +24,6 @@ class HomeState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getWeather(
-      (data) {
-        setState(() {
-          weather = data;
-        });
-      },
-    );
   }
 
   @override
@@ -47,16 +41,20 @@ class HomeState extends State<HomePage> {
             width: width,
             height: height / 3,
             child: Card(
-              child: Image.asset(
-                "images/web2.jpg",
-                fit: BoxFit.cover,
-              ),
+              child: message == null
+                  ? MyText("")
+                  : Image.network(
+                      message.url,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
-          Container(
+          Positioned(
             width: width,
-            height: height / 3,
-            child: weather == null ? Text('') : WeatherCard(weather),
+            height: 60,
+            bottom: 1.0,
+            left: 12,
+            child: message == null ? MyText("") : MyText(message.desc,textSize: 12,),
           ),
           Positioned(
             right: 8.0,
@@ -70,12 +68,11 @@ class HomeState extends State<HomePage> {
       )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          getWeather((data) {
+          getTest((text) {
             setState(() {
-              weather = data;
+              message = text;
             });
-          }, city: field.controller.text);
-          getTest();
+          });
         },
         child: Icon(Icons.http),
       ),
