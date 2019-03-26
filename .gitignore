@@ -1,0 +1,26 @@
+# Miscellaneous
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+.flutter-plugins
+.packages
+/build/
+
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+**/ios/Flutter/Generated.xcconfig
+**/ios/Runner/GeneratedPluginRegistrant.*
+
